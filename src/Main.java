@@ -1,33 +1,35 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println(encryptMessage("we found a treasure!"));
+        Scanner scanner = new Scanner(System.in);
+        String sentence = scanner.nextLine();
+        int key = scanner.nextInt();
+
+        System.out.println(encryptMessage(sentence, key));
     }
 
-    public static String encryptMessage(String str) {
+    public static String encryptMessage(String message, int key) {
         final int MAX_VALUE = 123;
         final int MIN_VALUE = 96;
+        final int alphabetLength = 26;
 
-        StringBuilder originalMessage = new StringBuilder(str.toLowerCase());
-        StringBuilder encodedMessageStringBuilder = new StringBuilder();
-        String encodedMessage;
+        StringBuilder result = new StringBuilder();
 
-        int asciiValue;
-        int displacement;
-
-        for (int charIndex = 0; charIndex < originalMessage.length(); charIndex++) {
-            asciiValue = originalMessage.charAt(charIndex);
-            displacement = MAX_VALUE - Math.abs(MIN_VALUE - asciiValue);
-
-            if (asciiValue <= MIN_VALUE || asciiValue >= MAX_VALUE) {
-                encodedMessageStringBuilder.append(originalMessage.charAt(charIndex));
+        for (int index = 0; index < message.length(); index++) {
+            if (message.charAt(index) == ' ') {
+                result.append(' ');
+            } else if (Character.isLowerCase(message.charAt(index))) {
+                char ch = (char) (((int) message.charAt(index) +
+                        key - MIN_VALUE) % alphabetLength + MIN_VALUE);
+                result.append(ch);
             } else {
-                encodedMessageStringBuilder.append((char) displacement);
+                char ch = (char) (((int) message.charAt(index) +
+                        key - MAX_VALUE) % alphabetLength + MAX_VALUE);
+                result.append(ch);
             }
         }
 
-        encodedMessage = encodedMessageStringBuilder.toString();
-
-        return encodedMessage;
+        return result.toString();
     }
 }
-
