@@ -1,57 +1,31 @@
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        String command = scanner.nextLine();
-        String sentence = scanner.nextLine();
-        int key = scanner.nextInt();
+        Command message = new Command();
 
-        switch (command) {
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
+                case "-mode":
+                    message.setUserChoice(args[i + 1]);
+                    break;
+                case "-key":
+                    message.setShiftNumber(args[i + 1]);
+                    break;
+                case "-data":
+                    message.setMessage(args[i + 1]);
+                    break;
+            }
+        }
+
+        switch (message.userChoice) {
             case "enc":
-                System.out.println(encryptMessage(sentence, key));
+                message.encryptMessage();
                 break;
             case "dec":
-                System.out.println(decryptMessage(sentence, key));
+                message.decryptMessage();
                 break;
         }
-    }
 
-    public static String encryptMessage(String message, int key) {
-
-        StringBuilder result = new StringBuilder();
-
-        for (int index = 0; index < message.length(); index++) {
-            if (Character.isLowerCase(message.charAt(index))) {
-                char ch = (char) (((int) message.charAt(index) +
-                        key));
-                result.append(ch);
-            } else {
-                char ch = (char) (((int) message.charAt(index) +
-                        key));
-                result.append(ch);
-            }
-        }
-
-        return result.toString();
-    }
-
-    public static String decryptMessage(String message, int key) {
-
-        StringBuilder result = new StringBuilder();
-
-        for (int index = 0; index < message.length(); index++) {
-            if (Character.isLowerCase(message.charAt(index))) {
-                char ch = (char) (((int) message.charAt(index) -
-                        key));
-                result.append(ch);
-            } else {
-                char ch = (char) (((int) message.charAt(index) -
-                        key));
-                result.append(ch);
-            }
-        }
-        return result.toString();
+        message.printResult();
     }
 }
